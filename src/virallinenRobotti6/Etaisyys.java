@@ -50,7 +50,7 @@ public class Etaisyys implements Runnable {
 		while (true){
 			
 			
-			setArvo(30);
+			setArvo(15);
 			setDistance(ultra.getDistance());
 			
 			Este();
@@ -64,16 +64,6 @@ public class Etaisyys implements Runnable {
 		if (distance <= Arvo && lf.moot.getVaihde() == 1){
 			lf.moot.setVaihde(2);
 			lf.moot.stop();
-			
-			if (lf.data.getPuoli() == 2){
-				lf.moot.rotateLeft();
-				lf.moot.setVaihde(3);
-			}
-//			
-//			else {
-//			lf.moot.rotateRight();	
-//			}
-			
 		}
 	}
 	

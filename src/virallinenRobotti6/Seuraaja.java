@@ -1,6 +1,5 @@
 package virallinenRobotti6;
 
-
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
 import lejos.nxt.LightSensor;
@@ -9,12 +8,11 @@ import lejos.nxt.SensorPort;
 import lejos.nxt.UltrasonicSensor;
 import lejos.util.*;
 
-
-
 public class Seuraaja implements Runnable {
 
 	LineFollower lf;
-	// Huom. ColorSensoria käyttävissä roboteissa pitää tehdä tähän tarvittavat muutokset!!!
+	// Huom. ColorSensoria käyttävissä roboteissa pitää tehdä tähän tarvittavat
+	// muutokset!!!
 	LightSensor light = new LightSensor(SensorPort.S4);
 	UltrasonicSensor ultra = new UltrasonicSensor(SensorPort.S2);
 	Stopwatch stopwatch = new Stopwatch();
@@ -24,8 +22,8 @@ public class Seuraaja implements Runnable {
 	private int tMax = 60;
 	private String lightValues = "";
 	private boolean isRunning;
-	
-	//etaisyys
+
+	// etaisyys
 	boolean minDistReached = false;
 	int MINDISTANCE = 300;
 
@@ -50,193 +48,172 @@ public class Seuraaja implements Runnable {
 		isRunning = true;
 	}
 
-
 	public void run() {
 		light.setFloodlight(true);
-		//LCD.drawString("Valo: ", 0, 0);
-		//LCD.drawString("Paina vasen ", 0, 2);
-		//LCD.drawString("aloittaaksesi", 0, 3);
-		//LCD.drawString("tai yhdista!", 0, 4);
+		// LCD.drawString("Valo: ", 0, 0);
+		// LCD.drawString("Paina vasen ", 0, 2);
+		// LCD.drawString("aloittaaksesi", 0, 3);
+		// LCD.drawString("tai yhdista!", 0, 4);
 
-		
 		while (!Button.LEFT.isPressed()) {
-		    LCD.drawString("Valitse puoli", 0, 0);
+			LCD.drawString("Valitse puoli", 0, 0);
 			LCD.drawInt(light.readValue(), 9, 1);
-			
+
 			int value = ultra.getDistance();
 			LCD.drawString("Etaisyys:", 4, 3);
-			LCD.drawInt(value, 4,5);			
+			LCD.drawInt(value, 4, 5);
 		}
 
-		if (Button.LEFT.isPressed()){
+		if (Button.LEFT.isPressed()) {
 			LCD.clear();
-		lf.data.setPuoli(2);
+			lf.data.setPuoli(2);
 			LCD.drawString("Vasen puoli", 0, 0);
 		}
-		
-		if (Button.RIGHT.isPressed()){
+
+		if (Button.RIGHT.isPressed()) {
 			LCD.clear();
-		lf.data.setPuoli(1);
+			lf.data.setPuoli(1);
 			LCD.drawString("Oikea puoli", 0, 0);
 		}
-		
 
-		
 		// 5 Sekunnin viive
-		 try {
-		 Thread.sleep(2000);
-		 LCD.drawString("Kierros alkaa 2 sekunnin kuluttua!", 0, 0);
-		 } catch (InterruptedException e) {
-		 
-		 e.printStackTrace();
-		 }
+		try {
+			Thread.sleep(2000);
+			LCD.drawString("Kierros alkaa 2 sekunnin kuluttua!", 0, 0);
+		} catch (InterruptedException e) {
+
+			e.printStackTrace();
+		}
 
 		// Aseteetaan vaihde 1 eli viivanseuranta
 		lf.moot.setVaihde(1);
 		stopwatch.reset();
 
-		
-		//LCD.clear();
-		//LCD.drawString("Ajossa", 0, 0);
-		//LCD.drawString("Aika: ", 0, 2);
-		//LCD.drawString("Valo: ", 0, 3);
+		// LCD.clear();
+		// LCD.drawString("Ajossa", 0, 0);
+		// LCD.drawString("Aika: ", 0, 2);
+		// LCD.drawString("Valo: ", 0, 3);
 
 		while (isRunning) {
-			
-			//aika = stopwatch.elapsed();
-					LCD.drawInt(light.readValue(), 9, 1);  	
-					int value = ultra.getDistance();
-					LCD.drawString("Etaisyys:", 4, 3);
-					LCD.drawInt(value, 4,5);		
-					
-					 int vaihdepaalla = lf.moot.getVaihde();
-					LCD.drawString("VAIHDE:", 6, 3);
-					LCD.drawInt(vaihdepaalla, 6,5);	
 
-					
-//			LCD.drawInt(aika / 1000, 6, 2);
-//			LCD.drawInt(light.getLightValue(), 6, 3);
-//
-//			// Valoarvon tallennus 100ms välein
-//			if (aika > vaAika + 100) {
-//				lightValues = lightValues + light.getLightValue() + " ";
-//				lf.data.setLightValues(lightValues);
-//				vaAika = aika;
-//			}
-//
-//			// Haetaan valo ja teho arvot
-//			blackWhiteThreshold = lf.data.getValo();
-//			lf.moot.setPower(lf.data.getTeho());
-//
-//			// Vasemman puolen seuraus
-					
+			// aika = stopwatch.elapsed();
+			LCD.drawInt(light.readValue(), 9, 1);
+			int value = ultra.getDistance();
+			LCD.drawString("Etaisyys:", 4, 3);
+			LCD.drawInt(value, 4, 5);
+
+			int vaihdepaalla = lf.moot.getVaihde();
+			LCD.drawString("VAIHDE:", 6, 3);
+			LCD.drawInt(vaihdepaalla, 6, 5);
+
+			// LCD.drawInt(aika / 1000, 6, 2);
+			// LCD.drawInt(light.getLightValue(), 6, 3);
+			//
+			// // Valoarvon tallennus 100ms välein
+			// if (aika > vaAika + 100) {
+			// lightValues = lightValues + light.getLightValue() + " ";
+			// lf.data.setLightValues(lightValues);
+			// vaAika = aika;
+			// }
+			//
+			// // Haetaan valo ja teho arvot
+			// blackWhiteThreshold = lf.data.getValo();
+			// lf.moot.setPower(lf.data.getTeho());
+			//
+			// // Vasemman puolen seuraus
+
 			if (lf.data.getPuoli() == 2 && lf.moot.getVaihde() == 1) {
-				
-				
-			if (light.readValue() > blackWhiteThreshold && light.readValue() < tMax){
-					//&& lf.moot.getVaihde() == 1) {
-				lf.moot.rightTurn();
+
+				if (light.readValue() > blackWhiteThreshold
+						&& light.readValue() < tMax) {
+					// && lf.moot.getVaihde() == 1) {
+					lf.moot.rightTurn(100, 0.9f);
+
+				}
+
+				if (light.readValue() > tMax) {
+					// && lf.moot.getVaihde() == 1) {
+					lf.moot.rightTurn(100, 0.2f);
+				}
+
+				if (light.readValue() < blackWhiteThreshold) {
+					// && lf.moot.getVaihde() == 1) {
+					lf.moot.leftTurn(100, 0.9f);
+				}
+
+				if (light.readValue() > 52 && light.readValue() < 60) {
+
+					lf.moot.eteenpain(100);
+				}
+
+				if (light.readValue() < 43) {
+
+					lf.moot.leftTurn(100, 0.2f);
+				}
 
 			}
 
-				if (light.readValue() > tMax){
-				//	&& lf.moot.getVaihde() == 1) {
-					lf.moot.rightHardTurn();
-				}
-			
-				if (light.readValue() < blackWhiteThreshold){
-						//		&& lf.moot.getVaihde() == 1) {
-					lf.moot.leftTurn();
-				}
-				
-				if (light.readValue() > 52 && light.readValue() < 60){
-					
-					lf.moot.eteenpain();
-				}
-				
-				if (light.readValue() < 43){
-					
-					lf.moot.leftHardTurn();
-				}
-				
-			}
-			
-				
 			// Oikean puolen seuraus
-		else if (lf.data.getPuoli() == 1 && lf.moot.getVaihde() == 1) {
-				if (light.readValue() > blackWhiteThreshold && light.readValue() < tMax){
-						
-					lf.moot.leftTurn();
+			else if (lf.data.getPuoli() == 1 && lf.moot.getVaihde() == 1) {
+				if (light.readValue() > blackWhiteThreshold
+						&& light.readValue() < tMax) {
+
+					lf.moot.leftTurn(100, 0.9f);
 
 				}
 
-					if (light.readValue() > tMax){
-					
-						lf.moot.leftHardTurn();
-					}
-				
-					if (light.readValue() < blackWhiteThreshold){
-							
-						lf.moot.rightTurn();
-					}
-					
-					if (light.readValue() > 52 && light.readValue() < 60){
-						
-						lf.moot.eteenpain();
-					}
-					
-					if (light.readValue() < 43){
-						
-						lf.moot.rightHardTurn();
-					}
-				
+				if (light.readValue() > tMax) {
+
+					lf.moot.leftTurn(100, 0.2f);
+				}
+
+				if (light.readValue() < blackWhiteThreshold) {
+
+					lf.moot.rightTurn(100, 0.9f);
+				}
+
+				if (light.readValue() > 52 && light.readValue() < 60) {
+
+					lf.moot.eteenpain(100);
+				}
+
+				if (light.readValue() < 43) {
+
+					lf.moot.rightTurn(100, 0.2f);
+				}
+
+			} else if (lf.moot.getVaihde() == 2) {
+				if (lf.data.getPuoli() == 2) {
+					lf.moot.rotateLeft(150, 420);
+					lf.moot.setVaihde(3);
+				} else {
+					lf.moot.rotateRight(150, 420);
+				}
+			} else if (lf.moot.getVaihde() == 3) {
+				lf.moot.eteenpain(200);
+			}
+
+			// // Paluu radalle väistön jälkeen
+			// while (lf.moot.getVaihde() == 3
+			// && light.getLightValue() > blackWhiteThreshold) {
+			// lf.moot.forwardSlow();
+			// }
+			// if (lf.moot.getVaihde() == 3
+			// && light.getLightValue() < blackWhiteThreshold) {
+			// lf.moot.setVaihde(1);
+			// }
+			// // Lopetus
+			// if (lf.moot.getVaihde() == 0) {
+			// lf.moot.stop();
+			// isRunning = false;
+			// }
+
+		}
+		// LCD.clear();
+		// LCD.drawString("Kierros ohi!", 0, 0);
+		// LCD.drawString("Aika: ", 0, 2);
+		// LCD.drawInt(aika / 1000, 6, 2);
+		// LCD.drawString("sekuntia", 0, 3);
 	}
-		else if (lf.moot.getVaihde() == 3) {
-			lf.moot.eteenpain();
-		}
-		
-			//väistäminen
 
-//			while (!minDistReached) {
-//				
-//				lf.moot.setVaihde(3);
-//				minDistReached = ultra.getDistance() <= MINDISTANCE;
-//				lf.moot.rotateRight();
-//				
-//				if (ultra.getDistance() >= 300){
-//					lf.moot.setVaihde(1);
-//					
-//				}
-//				
-//				
-//			}
-			
-			
-
-				
-//			// Paluu radalle väistön jälkeen
-//			while (lf.moot.getVaihde() == 3
-//					&& light.getLightValue() > blackWhiteThreshold) {
-//				lf.moot.forwardSlow();
-//			}
-//			if (lf.moot.getVaihde() == 3
-//					&& light.getLightValue() < blackWhiteThreshold) {
-//				lf.moot.setVaihde(1);
-//			}
-//			// Lopetus
-//			if (lf.moot.getVaihde() == 0) {
-//				lf.moot.stop();
-//				isRunning = false;
-//			}
-
-		}
-		//LCD.clear();
-		//LCD.drawString("Kierros ohi!", 0, 0);
-		//LCD.drawString("Aika: ", 0, 2);
-		//LCD.drawInt(aika / 1000, 6, 2);
-		//LCD.drawString("sekuntia", 0, 3);
-	}
-			
-		}
-
-		
+}
