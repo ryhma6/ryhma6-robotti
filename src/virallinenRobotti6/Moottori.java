@@ -79,7 +79,29 @@ public class Moottori {
 
 		Motor.C.forward();
 		Motor.C.setSpeed(nopeus);
-
+	}
+	
+	public boolean eteenpain(int nopeus, int tacho) {
+		while (MotorPort.B.getTachoCount() < tacho || MotorPort.C.getTachoCount() < tacho)
+		{
+			if (!liikkuu())
+			{
+				Motor.B.forward();
+				Motor.B.setSpeed(nopeus);
+	
+				Motor.C.forward();
+				Motor.C.setSpeed(nopeus);
+			}
+			
+			return false;
+		}
+		
+		return true;
+	}
+	
+	public void resetTacho() {
+		MotorPort.C.resetTachoCount();
+		MotorPort.B.resetTachoCount();
 	}
 
 	public void forwardSlow() {
@@ -119,15 +141,15 @@ public class Moottori {
 
 	public void rotateLeft(int speed, int degrees) {
 
-		Motor.B.setSpeed(speed);
-		Motor.B.rotate(degrees);
+		Motor.C.setSpeed(speed);
+		Motor.C.rotate(degrees);
 		stop();
 	}
 
 	public void rotateLeft(int speed, int degrees, int pauseTime) {
-		
-		Motor.B.setSpeed(speed);
-		Motor.B.rotate(degrees);
+		stop();
+		Motor.C.setSpeed(speed);
+		Motor.C.rotate(degrees);
 		stop();
 
 		stopwatch.reset();
@@ -139,21 +161,17 @@ public class Moottori {
 	}
 	
 	public void rotateRight(int speed, int degrees) {
-
-		Motor.C.setSpeed(speed);
-		Motor.C.rotate(degrees);
+		stop();
+		Motor.B.setSpeed(speed);
+		Motor.B.rotate(degrees);
 		stop();
 	}
 	
-	public void motorCTest() {
-		Motor.B.forward();
-		Motor.B.setSpeed(200);
-	}
 
 	public void rotateRight(int speed, int degrees, int pauseTime) {
-
-		Motor.C.setSpeed(speed);
-		Motor.C.rotate(degrees);
+		stop();
+		Motor.B.setSpeed(speed);
+		Motor.B.rotate(degrees);
 		stop();
 
 		stopwatch.reset();
@@ -167,6 +185,13 @@ public class Moottori {
 		// TODO Auto-generated method stub
 		Motor.B.stop();
 		Motor.C.stop();
+	}
+	
+	public boolean liikkuu() {
+		boolean liikkuu = false;
+		if (Motor.B.isMoving() || Motor.B.isMoving())
+			liikkuu = true;
+		return liikkuu;
 	}
 
 }

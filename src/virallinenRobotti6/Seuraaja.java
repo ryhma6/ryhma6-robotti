@@ -15,7 +15,8 @@ public class Seuraaja implements Runnable {
 	// muutokset!!!
 	LightSensor light = new LightSensor(SensorPort.S4);
 	UltrasonicSensor ultra = new UltrasonicSensor(SensorPort.S2);
-	Stopwatch stopwatch = new Stopwatch();
+	Stopwatch sw = new Stopwatch();
+	Stopwatch swKaanto = new Stopwatch();
 	private int aika;
 	private int vaAika = 0;
 	private int blackWhiteThreshold = 55;
@@ -87,7 +88,8 @@ public class Seuraaja implements Runnable {
 
 		// Aseteetaan vaihde 1 eli viivanseuranta
 		lf.moot.setVaihde(1);
-		stopwatch.reset();
+		lf.data.setPuoli(2);
+		sw.reset();
 
 		// LCD.clear();
 		// LCD.drawString("Ajossa", 0, 0);
@@ -124,81 +126,64 @@ public class Seuraaja implements Runnable {
 
 			if (lf.data.getPuoli() == 2 && lf.moot.getVaihde() == 1) {
 
-				if (light.readValue() > blackWhiteThreshold
-						&& light.readValue() < tMax) {
-					// && lf.moot.getVaihde() == 1) {
-					lf.moot.rightTurn(lf.data.getNopeus(), 0.9f);
+				if (light.readValue() > lf.data.getAlarajaValkoinen())
+					lf.moot.rightTurn(lf.data.getNopeus(), lf.data.getKaantoNopea());
+				
+				if (light.readValue() <= lf.data.getAlarajaValkoinen() && light.readValue() > lf.data.getKeskiraja())
+					lf.moot.leftTurn(lf.data.getNopeus(), lf.data.getKaantoHidas());
 
-				}
-
-				if (light.readValue() > tMax) {
-					// && lf.moot.getVaihde() == 1) {
-					lf.moot.rightTurn(lf.data.getNopeus(), 0.2f);
-				}
-
-				if (light.readValue() < blackWhiteThreshold) {
-					// && lf.moot.getVaihde() == 1) {
-					lf.moot.leftTurn(lf.data.getNopeus(), 0.9f);
-				}
-
-				if (light.readValue() > 52 && light.readValue() < 60) {
-
+				if (light.readValue() <= lf.data.getKeskiraja() && light.readValue() >= lf.data.getYlarajaMusta())
 					lf.moot.eteenpain(lf.data.getNopeus());
-				}
-
-				if (light.readValue() < 43) {
-
-					lf.moot.leftTurn(lf.data.getNopeus(), 0.2f);
-				}
-
+				
+				if (light.readValue() < lf.data.getYlarajaMusta() && light.readValue() >= lf.data.getAlarajaMusta())
+					lf.moot.rightTurn(lf.data.getNopeus(), lf.data.getKaantoHidas());
+				
+				if (light.readValue() < lf.data.getAlarajaMusta())
+					lf.moot.leftTurn(lf.data.getNopeus(), lf.data.getKaantoNopea());
 			}
 
 			// Oikean puolen seuraus
-			else if (lf.data.getPuoli() == 1 && lf.moot.getVaihde() == 1) {
-				if (light.readValue() > blackWhiteThreshold
-						&& light.readValue() < tMax) {
+			else if (lf.data.getPuoli() == 1 && lf.moot.getVaihde() == 1) {/*
+				if (light.readValue() > lf.data.getAlarajaValkoinen())
+					lf.moot.leftTurn(lf.data.getNopeus(), lf.data.getKaantoNopea());
+				
+				if (light.readValue() <= lf.data.getAlarajaValkoinen() && light.readValue() > lf.data.getKeskiraja())
+					lf.moot.leftTurn(lf.data.getNopeus(), lf.data.getKaantoHidas());
 
-					lf.moot.leftTurn(lf.data.getNopeus(), 0.9f);
-
-				}
-
-				if (light.readValue() > tMax) {
-
-					lf.moot.leftTurn(lf.data.getNopeus(), 0.2f);
-				}
-
-				if (light.readValue() < blackWhiteThreshold) {
-
-					lf.moot.rightTurn(lf.data.getNopeus(), 0.9f);
-				}
-
-				if (light.readValue() > 52 && light.readValue() < 60) {
-
+				if (light.readValue() <= lf.data.getKeskiraja() && light.readValue() >= lf.data.getYlarajaMusta())
 					lf.moot.eteenpain(lf.data.getNopeus());
-				}
-
-				if (light.readValue() < 43) {
-
-					lf.moot.rightTurn(lf.data.getNopeus(), 0.2f);
-				}
-
+				
+				if (light.readValue() < lf.data.getYlarajaMusta() && light.readValue() >= lf.data.getAlarajaMusta())
+					lf.moot.rightTurn(lf.data.getNopeus(), lf.data.getKaantoHidas());
+				else
+					lf.moot.rightTurn(lf.data.getNopeus(), lf.data.getKaantoNopea());
+*/
 			} else if (lf.moot.getVaihde() == 2) {
-				/*
+				
 				if (lf.data.getPuoli() == 2) {
-					lf.moot.rotateRight(400, -400);
+					lf.moot.rotateLeft(400, -520, 4000);
+					lf.moot.rotateRight(400, -520, 5000);
+					lf.moot.rotateRight(400,-520);
 					lf.moot.setVaihde(3);
 				} else {
-					lf.moot.rotateLeft(400, -400);
+					lf.moot.rotateRight(400, -520, 4000);
+					lf.moot.rotateLeft(400, -520, 7000);
+					lf.moot.rotateLeft(400,-520);
 					lf.moot.setVaihde(3);
 				}
-				*/
+				
 				lf.moot.setVaihde(3);
 				lf.moot.stop();
-			} else if (lf.moot.getVaihde() == 3) {
-				//lf.moot.eteenpain(200);
-				//lf.moot.stop();
 				
-				lf.moot.motorCTest();
+			} else if (lf.moot.getVaihde() == 3) {
+				if (light.readValue() > lf.data.getYlarajaMusta())
+				{
+					lf.moot.eteenpain(lf.data.getNopeus());
+				} else {
+					lf.moot.stop();
+					lf.moot.rotateRight(lf.data.getNopeus(), lf.data.getRotaatio45());
+					lf.moot.setVaihde(1);
+				}
 			}
 
 			// // Paluu radalle väistön jälkeen
