@@ -125,7 +125,7 @@ public class Moottori {
 	}
 
 	public void rotateLeft(int speed, int degrees, int pauseTime) {
-
+		
 		Motor.B.setSpeed(speed);
 		Motor.B.rotate(degrees);
 		stop();
@@ -143,6 +143,11 @@ public class Moottori {
 		Motor.C.setSpeed(speed);
 		Motor.C.rotate(degrees);
 		stop();
+	}
+	
+	public void motorCTest() {
+		Motor.B.forward();
+		Motor.B.setSpeed(200);
 	}
 
 	public void rotateRight(int speed, int degrees, int pauseTime) {

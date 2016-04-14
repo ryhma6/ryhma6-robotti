@@ -127,28 +127,28 @@ public class Seuraaja implements Runnable {
 				if (light.readValue() > blackWhiteThreshold
 						&& light.readValue() < tMax) {
 					// && lf.moot.getVaihde() == 1) {
-					lf.moot.rightTurn(100, 0.9f);
+					lf.moot.rightTurn(lf.data.getNopeus(), 0.9f);
 
 				}
 
 				if (light.readValue() > tMax) {
 					// && lf.moot.getVaihde() == 1) {
-					lf.moot.rightTurn(100, 0.2f);
+					lf.moot.rightTurn(lf.data.getNopeus(), 0.2f);
 				}
 
 				if (light.readValue() < blackWhiteThreshold) {
 					// && lf.moot.getVaihde() == 1) {
-					lf.moot.leftTurn(100, 0.9f);
+					lf.moot.leftTurn(lf.data.getNopeus(), 0.9f);
 				}
 
 				if (light.readValue() > 52 && light.readValue() < 60) {
 
-					lf.moot.eteenpain(100);
+					lf.moot.eteenpain(lf.data.getNopeus());
 				}
 
 				if (light.readValue() < 43) {
 
-					lf.moot.leftTurn(100, 0.2f);
+					lf.moot.leftTurn(lf.data.getNopeus(), 0.2f);
 				}
 
 			}
@@ -158,39 +158,47 @@ public class Seuraaja implements Runnable {
 				if (light.readValue() > blackWhiteThreshold
 						&& light.readValue() < tMax) {
 
-					lf.moot.leftTurn(100, 0.9f);
+					lf.moot.leftTurn(lf.data.getNopeus(), 0.9f);
 
 				}
 
 				if (light.readValue() > tMax) {
 
-					lf.moot.leftTurn(100, 0.2f);
+					lf.moot.leftTurn(lf.data.getNopeus(), 0.2f);
 				}
 
 				if (light.readValue() < blackWhiteThreshold) {
 
-					lf.moot.rightTurn(100, 0.9f);
+					lf.moot.rightTurn(lf.data.getNopeus(), 0.9f);
 				}
 
 				if (light.readValue() > 52 && light.readValue() < 60) {
 
-					lf.moot.eteenpain(100);
+					lf.moot.eteenpain(lf.data.getNopeus());
 				}
 
 				if (light.readValue() < 43) {
 
-					lf.moot.rightTurn(100, 0.2f);
+					lf.moot.rightTurn(lf.data.getNopeus(), 0.2f);
 				}
 
 			} else if (lf.moot.getVaihde() == 2) {
+				/*
 				if (lf.data.getPuoli() == 2) {
-					lf.moot.rotateLeft(150, 420);
+					lf.moot.rotateRight(400, -400);
 					lf.moot.setVaihde(3);
 				} else {
-					lf.moot.rotateRight(150, 420);
+					lf.moot.rotateLeft(400, -400);
+					lf.moot.setVaihde(3);
 				}
+				*/
+				lf.moot.setVaihde(3);
+				lf.moot.stop();
 			} else if (lf.moot.getVaihde() == 3) {
-				lf.moot.eteenpain(200);
+				//lf.moot.eteenpain(200);
+				//lf.moot.stop();
+				
+				lf.moot.motorCTest();
 			}
 
 			// // Paluu radalle väistön jälkeen
