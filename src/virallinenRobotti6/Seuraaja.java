@@ -99,13 +99,6 @@ public class Seuraaja implements Runnable {
 		// LCD.drawString("Valo: ", 0, 3);
 
 		while (isRunning) {
-			try {
-				lf.data.ReadData();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
 			// aika = stopwatch.elapsed();
 			LCD.drawInt(light.readValue(), 9, 1);
 			int value = ultra.getDistance();
@@ -244,13 +237,6 @@ public class Seuraaja implements Runnable {
 				lf.moot.stop();
 				LCD.clear();
 				LCD.drawString("KAKKAAA!", 2, 0);
-			}
-
-			try {
-				lf.data.OutputData();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 
 		}
