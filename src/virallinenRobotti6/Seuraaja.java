@@ -169,7 +169,10 @@ public class Seuraaja implements Runnable {
 }				
              else if (lf.moot.getVaihde() == 2) {
 				
-            	 
+            	 if(estelkm == 1) {
+            		 lf.moot.setVaihde(0);
+            	 }
+            	 int estelkm = 1;
             	 
 				if (lf.data.getPuoli() == 2) {
 					lf.moot.rotateLeft(400, -520, 4000);
@@ -198,6 +201,7 @@ public class Seuraaja implements Runnable {
 					if (lf.data.getPuoli() == 2){
 						lf.moot.rotateRight(lf.data.getNopeus(), lf.data.getRotaatio45());
 					}
+
 					else {
 						lf.moot.rotateLeft(lf.data.getNopeus(), lf.data.getRotaatio45());
 					}
@@ -228,5 +232,4 @@ public class Seuraaja implements Runnable {
 		// LCD.drawInt(aika / 1000, 6, 2);
 		// LCD.drawString("sekuntia", 0, 3);
 	}
-
 }
