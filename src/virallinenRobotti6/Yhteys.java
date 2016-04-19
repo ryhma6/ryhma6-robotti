@@ -72,6 +72,10 @@ public class Yhteys implements Runnable {
 					Sound.twoBeeps();
 				}
 			}
+			else {
+				LCD.clear();
+				LCD.drawString("CONNECTED", 0, 0);
+			}
 		}
 	}
 }
