@@ -11,11 +11,6 @@ import lejos.nxt.comm.USB;
 import lejos.nxt.comm.USBConnection;
 
 public class Data {
-
-	NXTConnection connection = null;
-	DataInputStream dis = null;
-	DataOutputStream dos = null;
-	
 	private int puoli;
 	
 	//Liikearvot
@@ -33,29 +28,6 @@ public class Data {
 	private int keskiraja = 56;
 	private int ylarajaMusta = 49;
 	private int alarajaMusta = 45;
-	
-	public void Connect() {
-		while (connection == null)
-		{
-			//connection = Bluetooth.waitForConnection(30, 0);
-			connection = USB.waitForConnection(30, 0);
-		}
-	}
-	
-	public void ReadData() throws IOException {
-		dis = connection.openDataInputStream();
-		dis.close();
-	}
-	
-	public void OutputData() throws IOException {
-		dos = connection.openDataOutputStream();
-		dos.writeUTF("nopeus");
-		dos.writeInt(getNopeus());
-		LCD.clear();
-		LCD.drawInt(dos.size(), 7, 1);
-		dos.flush();
-		dos.close();
-	}
 
 	public void setLightValues(String lightValues) {
 		// TODO Auto-generated method stub

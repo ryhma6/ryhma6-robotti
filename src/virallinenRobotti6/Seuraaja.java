@@ -8,6 +8,10 @@ import lejos.nxt.LightSensor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.UltrasonicSensor;
 import lejos.util.*;
+import lejos.nxt.Sound;
+import lejos.nxt.remote.FileInfo;
+
+import java.lang.Object.*;
 
 public class Seuraaja implements Runnable {
 
@@ -19,6 +23,7 @@ public class Seuraaja implements Runnable {
 	Stopwatch sw = new Stopwatch();
 	Stopwatch swKaanto = new Stopwatch();
 	Stopwatch stopwatch = new Stopwatch();
+	
 	private int aika;
 	private int vaAika = 0;
 	private int blackWhiteThreshold = 55;
@@ -99,6 +104,9 @@ public class Seuraaja implements Runnable {
 		// LCD.drawString("Valo: ", 0, 3);
 
 		while (isRunning) {
+			
+	        Sound.beep();
+			
 			aika = stopwatch.elapsed();
 			LCD.drawInt(light.readValue(), 9, 1);
 			int value = ultra.getDistance();
@@ -109,7 +117,6 @@ public class Seuraaja implements Runnable {
 			LCD.drawString("VAIHDE:", 1, 3);
 			LCD.drawInt(vaihdepaalla, 7, 3);
 
-			LCD.drawInt(aika / 1000, 6, 6);
 
 			// // Haetaan valo ja teho arvot
 			// blackWhiteThreshold = lf.data.getValo();

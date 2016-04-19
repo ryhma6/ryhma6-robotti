@@ -21,7 +21,6 @@ class LineFollower {
 		LineFollower nxt = new LineFollower();
 		
 		nxt.Threadit(nxt);
-		nxt.data.Connect();
 	}
 	
 	
@@ -29,9 +28,9 @@ class LineFollower {
 	public void Threadit(LineFollower nxt) {
 		Thread tarkkailija = new Thread(new Etaisyys(nxt));
 		Thread seuraaja = new Thread(new Seuraaja(nxt));
+		Thread yhteys = new Thread(new Yhteys(nxt));
 
-		
-		
+		yhteys.start();
 		tarkkailija.start();
 		seuraaja.start();
 	}
