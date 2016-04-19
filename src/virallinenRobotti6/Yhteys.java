@@ -74,6 +74,11 @@ public class Yhteys implements Runnable {
 					Sound.twoBeeps();
 				}
 			}
+			else {
+				LCD.clear();
+				LCD.drawString("CONNECT FAIL", 0, 0);
+				Sound.twoBeeps();
+			}
 		}
 	}
 }
