@@ -1,7 +1,21 @@
 package virallinenRobotti6;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
+import lejos.nxt.LCD;
+import lejos.nxt.comm.Bluetooth;
+import lejos.nxt.comm.NXTConnection;
+import lejos.nxt.comm.USB;
+import lejos.nxt.comm.USBConnection;
+
 public class Data {
 
+	NXTConnection connection = null;
+	DataInputStream dis = null;
+	DataOutputStream dos = null;
+	
 	private int puoli;
 	
 	//Liikearvot
@@ -21,8 +35,26 @@ public class Data {
 	private int alarajaMusta = 45;
 	
 	public void Connect() {
-		// TODO Auto-generated method stub
-		
+		while (connection == null)
+		{
+			//connection = Bluetooth.waitForConnection(30, 0);
+			connection = USB.waitForConnection(30, 0);
+		}
+	}
+	
+	public void ReadData() throws IOException {
+		dis = connection.openDataInputStream();
+		dis.close();
+	}
+	
+	public void OutputData() throws IOException {
+		dos = connection.openDataOutputStream();
+		dos.writeUTF("nopeus");
+		dos.writeInt(getNopeus());
+		LCD.clear();
+		LCD.drawInt(dos.size(), 7, 1);
+		dos.flush();
+		dos.close();
 	}
 
 	public void setLightValues(String lightValues) {
