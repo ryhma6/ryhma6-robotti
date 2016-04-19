@@ -198,10 +198,10 @@ public class Seuraaja implements Runnable {
 			// lf.moot.setVaihde(1);
 			// }
 			// // Lopetus
-			// if (lf.moot.getVaihde() == 0) {
-			// lf.moot.stop();
-			// isRunning = false;
-			// }
+			 if (lf.moot.getVaihde() == 0) {
+			 lf.moot.stop();
+			 isRunning = false;
+			 }
 
 		}
 		// LCD.clear();

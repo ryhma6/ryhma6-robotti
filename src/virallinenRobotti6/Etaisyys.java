@@ -16,6 +16,7 @@ public class Etaisyys implements Runnable {
     
     private int distance = 0;
     private int Arvo = 0;
+    private int estelkm =0;
     UltrasonicSensor ultra = new UltrasonicSensor(SensorPort.S2);
     
     public Etaisyys(LineFollower lf) {
@@ -61,11 +62,16 @@ public class Etaisyys implements Runnable {
 	
 	public void Este() {
 		
-		if (distance <= Arvo && lf.moot.getVaihde() == 1){
+		if (distance <= Arvo && lf.moot.getVaihde() == 1 && estelkm <=0){
+			estelkm ++;
 			lf.moot.setVaihde(2);
 			lf.moot.stop();
+		}
+		else{
+			lf.moot.setVaihde(0);
+		}
 		}
 	}
 	
 	
-}
+
