@@ -50,7 +50,6 @@ public class Etaisyys implements Runnable {
 
 		while (true){
 			
-			
 			setArvo(25);
 			setDistance(ultra.getDistance());
 			

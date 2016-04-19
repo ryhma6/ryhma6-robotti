@@ -5,7 +5,6 @@ import java.io.IOException;
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
 import lejos.nxt.LightSensor;
-import lejos.nxt.Motor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.UltrasonicSensor;
 import lejos.util.*;
@@ -19,6 +18,7 @@ public class Seuraaja implements Runnable {
 	UltrasonicSensor ultra = new UltrasonicSensor(SensorPort.S2);
 	Stopwatch sw = new Stopwatch();
 	Stopwatch swKaanto = new Stopwatch();
+	Stopwatch stopwatch = new Stopwatch();
 	private int aika;
 	private int vaAika = 0;
 	private int blackWhiteThreshold = 55;
@@ -99,7 +99,7 @@ public class Seuraaja implements Runnable {
 		// LCD.drawString("Valo: ", 0, 3);
 
 		while (isRunning) {
-			// aika = stopwatch.elapsed();
+			aika = stopwatch.elapsed();
 			LCD.drawInt(light.readValue(), 9, 1);
 			int value = ultra.getDistance();
 			LCD.drawString("Etaisyys:", 1, 4);
@@ -109,16 +109,8 @@ public class Seuraaja implements Runnable {
 			LCD.drawString("VAIHDE:", 1, 3);
 			LCD.drawInt(vaihdepaalla, 7, 3);
 
-			// LCD.drawInt(aika / 1000, 6, 2);
-			// LCD.drawInt(light.getLightValue(), 6, 3);
-			//
-			// // Valoarvon tallennus 100ms välein
-			// if (aika > vaAika + 100) {
-			// lightValues = lightValues + light.getLightValue() + " ";
-			// lf.data.setLightValues(lightValues);
-			// vaAika = aika;
-			// }
-			//
+			LCD.drawInt(aika / 1000, 6, 6);
+
 			// // Haetaan valo ja teho arvot
 			// blackWhiteThreshold = lf.data.getValo();
 			// lf.moot.setPower(lf.data.getTeho());
@@ -237,16 +229,16 @@ public class Seuraaja implements Runnable {
 			// }
 			// Lopetus
 			if (lf.moot.getVaihde() == 0) {
-				LCD.clear();
-				LCD.drawString("KAKKAAA!", 2, 0);
 				lf.moot.stop();
+				isRunning = false;
 			}
 
 		}
-		// LCD.clear();
-		// LCD.drawString("Kierros ohi!", 0, 0);
-		// LCD.drawString("Aika: ", 0, 2);
-		// LCD.drawInt(aika / 1000, 6, 2);
-		// LCD.drawString("sekuntia", 0, 3);
+			LCD.clear();
+			LCD.drawString("Kierros ohi!", 0, 0);
+			LCD.drawString("Aika: ", 0, 2);
+			LCD.drawInt(aika / 1000, 6, 2);
+			LCD.drawString("sekuntia", 0, 3);
+			Button.waitForAnyPress();
 	}
 }
