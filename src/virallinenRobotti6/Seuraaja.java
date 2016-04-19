@@ -143,21 +143,23 @@ public class Seuraaja implements Runnable {
 			}
 
 			// Oikean puolen seuraus
-			else if (lf.data.getPuoli() == 1 && lf.moot.getVaihde() == 1) {/*
+			else if (lf.data.getPuoli() == 1 && lf.moot.getVaihde() == 1) {
 				if (light.readValue() > lf.data.getAlarajaValkoinen())
 					lf.moot.leftTurn(lf.data.getNopeus(), lf.data.getKaantoNopea());
 				
 				if (light.readValue() <= lf.data.getAlarajaValkoinen() && light.readValue() > lf.data.getKeskiraja())
-					lf.moot.leftTurn(lf.data.getNopeus(), lf.data.getKaantoHidas());
+					lf.moot.rightTurn(lf.data.getNopeus(), lf.data.getKaantoHidas());
 
 				if (light.readValue() <= lf.data.getKeskiraja() && light.readValue() >= lf.data.getYlarajaMusta())
 					lf.moot.eteenpain(lf.data.getNopeus());
 				
 				if (light.readValue() < lf.data.getYlarajaMusta() && light.readValue() >= lf.data.getAlarajaMusta())
-					lf.moot.rightTurn(lf.data.getNopeus(), lf.data.getKaantoHidas());
-				else
+					lf.moot.leftTurn(lf.data.getNopeus(), lf.data.getKaantoHidas());
+				
+				if (light.readValue() < lf.data.getAlarajaMusta())
 					lf.moot.rightTurn(lf.data.getNopeus(), lf.data.getKaantoNopea());
-*/
+
+				
 			} else if (lf.moot.getVaihde() == 2) {
 				
 				if (lf.data.getPuoli() == 2) {
