@@ -1,5 +1,7 @@
 package virallinenRobotti6;
 
+import java.io.IOException;
+
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
 import lejos.nxt.LightSensor;
@@ -56,17 +58,16 @@ public class Seuraaja implements Runnable {
 		// LCD.drawString("Paina vasen ", 0, 2);
 		// LCD.drawString("aloittaaksesi", 0, 3);
 		// LCD.drawString("tai yhdista!", 0, 4);
-	
-		
-			LCD.drawString("Valitse puoli", 0, 0);
-			LCD.drawInt(light.readValue(), 9, 1);
 
-			int vallu = ultra.getDistance();
-			LCD.drawString("Etaisyys:", 4, 3);
-			LCD.drawInt(vallu, 4, 5);
-			
-			Button.waitForAnyPress();
-		
+		LCD.drawString("Valitse puoli", 0, 0);
+		LCD.drawInt(light.readValue(), 9, 1);
+
+		int vallu = ultra.getDistance();
+		LCD.drawString("Etaisyys:", 4, 3);
+		LCD.drawInt(vallu, 4, 5);
+
+		Button.waitForAnyPress();
+
 		if (Button.LEFT.isPressed()) {
 			LCD.clear();
 			lf.data.setPuoli(2);
@@ -76,9 +77,8 @@ public class Seuraaja implements Runnable {
 		if (Button.RIGHT.isPressed()) {
 			LCD.clear();
 			lf.data.setPuoli(1);
-			LCD.drawString("Oikea puoli", 0, 0);	
+			LCD.drawString("Oikea puoli", 0, 0);
 		}
-		
 
 		// 5 Sekunnin viive
 		try {
@@ -99,6 +99,12 @@ public class Seuraaja implements Runnable {
 		// LCD.drawString("Valo: ", 0, 3);
 
 		while (isRunning) {
+			try {
+				lf.data.ReadData();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			// aika = stopwatch.elapsed();
 			LCD.drawInt(light.readValue(), 9, 1);
@@ -109,8 +115,6 @@ public class Seuraaja implements Runnable {
 			int vaihdepaalla = lf.moot.getVaihde();
 			LCD.drawString("VAIHDE:", 1, 3);
 			LCD.drawInt(vaihdepaalla, 7, 3);
-			
-			
 
 			// LCD.drawInt(aika / 1000, 6, 2);
 			// LCD.drawInt(light.getLightValue(), 6, 3);
@@ -129,82 +133,98 @@ public class Seuraaja implements Runnable {
 			// // Vasemman puolen seuraus
 
 			if (lf.data.getPuoli() == 2 && lf.moot.getVaihde() == 1) {
-				
+
 				LCD.drawString("Vasen puoli", 0, 0);
 				if (light.readValue() > lf.data.getAlarajaValkoinen())
-					lf.moot.rightTurn(lf.data.getNopeus(), lf.data.getKaantoNopea());
-				
-				if (light.readValue() <= lf.data.getAlarajaValkoinen() && light.readValue() > lf.data.getKeskiraja())
-					lf.moot.leftTurn(lf.data.getNopeus(), lf.data.getKaantoHidas());
+					lf.moot.rightTurn(lf.data.getNopeus(),
+							lf.data.getKaantoNopea());
 
-				if (light.readValue() <= lf.data.getKeskiraja() && light.readValue() >= lf.data.getYlarajaMusta())
+				if (light.readValue() <= lf.data.getAlarajaValkoinen()
+						&& light.readValue() > lf.data.getKeskiraja())
+					lf.moot.leftTurn(lf.data.getNopeus(),
+							lf.data.getKaantoHidas());
+
+				if (light.readValue() <= lf.data.getKeskiraja()
+						&& light.readValue() >= lf.data.getYlarajaMusta())
 					lf.moot.eteenpain(lf.data.getNopeus());
-				
-				if (light.readValue() < lf.data.getYlarajaMusta() && light.readValue() >= lf.data.getAlarajaMusta())
-					lf.moot.rightTurn(lf.data.getNopeus(), lf.data.getKaantoHidas());
-				
+
+				if (light.readValue() < lf.data.getYlarajaMusta()
+						&& light.readValue() >= lf.data.getAlarajaMusta())
+					lf.moot.rightTurn(lf.data.getNopeus(),
+							lf.data.getKaantoHidas());
+
 				if (light.readValue() < lf.data.getAlarajaMusta())
-					lf.moot.leftTurn(lf.data.getNopeus(), lf.data.getKaantoNopea());
+					lf.moot.leftTurn(lf.data.getNopeus(),
+							lf.data.getKaantoNopea());
 			}
 
 			// Oikean puolen seuraus
 			if (lf.data.getPuoli() == 1 && lf.moot.getVaihde() == 1) {
 				LCD.drawString("oikea puoli", 0, 0);
-				
+
 				if (light.readValue() > lf.data.getAlarajaValkoinen())
-					lf.moot.leftTurn(lf.data.getNopeus(), lf.data.getKaantoNopea());
-				
-				if (light.readValue() <= lf.data.getAlarajaValkoinen() && light.readValue() > lf.data.getKeskiraja())
-					lf.moot.rightTurn(lf.data.getNopeus(), lf.data.getKaantoHidas());
+					lf.moot.leftTurn(lf.data.getNopeus(),
+							lf.data.getKaantoNopea());
 
-				if (light.readValue() <= lf.data.getKeskiraja() && light.readValue() >= lf.data.getYlarajaMusta())
+				if (light.readValue() <= lf.data.getAlarajaValkoinen()
+						&& light.readValue() > lf.data.getKeskiraja())
+					lf.moot.rightTurn(lf.data.getNopeus(),
+							lf.data.getKaantoHidas());
+
+				if (light.readValue() <= lf.data.getKeskiraja()
+						&& light.readValue() >= lf.data.getYlarajaMusta())
 					lf.moot.eteenpain(lf.data.getNopeus());
-				
-				if (light.readValue() < lf.data.getYlarajaMusta() && light.readValue() >= lf.data.getAlarajaMusta())
-					lf.moot.leftTurn(lf.data.getNopeus(), lf.data.getKaantoHidas());
-				
-				if (light.readValue() < lf.data.getAlarajaMusta())
-					lf.moot.rightTurn(lf.data.getNopeus(), lf.data.getKaantoNopea());
 
-}				
-             else if (lf.moot.getVaihde() == 2) {
-				
-            	 if(estelkm >= 1) {
-            		 lf.moot.setVaihde(0);
-            	 }
-            	 
-            	 estelkm++;
-            	 
+				if (light.readValue() < lf.data.getYlarajaMusta()
+						&& light.readValue() >= lf.data.getAlarajaMusta())
+					lf.moot.leftTurn(lf.data.getNopeus(),
+							lf.data.getKaantoHidas());
+
+				if (light.readValue() < lf.data.getAlarajaMusta())
+					lf.moot.rightTurn(lf.data.getNopeus(),
+							lf.data.getKaantoNopea());
+
+			} else if (lf.moot.getVaihde() == 2) {
+
+				if (estelkm >= 1) {
+					lf.moot.setVaihde(0);
+					break;
+				}
+
+				estelkm++;
+
 				if (lf.data.getPuoli() == 2) {
 					lf.moot.rotateLeft(400, -520, 4000);
 					lf.moot.rotateRight(400, -520, 5000);
-					lf.moot.rotateRight(400,-520);
+					lf.moot.rotateRight(400, -520);
 					lf.moot.setVaihde(3);
 				} else {
 					lf.moot.rotateRight(400, -520, 4000);
 					lf.moot.rotateLeft(400, -520, 7000);
-					lf.moot.rotateLeft(400,-520);
+					lf.moot.rotateLeft(400, -520);
 					lf.moot.setVaihde(3);
 				}
-				
+
 				lf.moot.setVaihde(3);
 				lf.moot.stop();
-				
+
 			} else if (lf.moot.getVaihde() == 3) {
-				
-				if (light.readValue() > lf.data.getYlarajaMusta()){
-					lf.moot.eteenpain(lf.data.getNopeus());				
+
+				if (light.readValue() > lf.data.getYlarajaMusta()) {
+					lf.moot.eteenpain(lf.data.getNopeus());
 				}
-				
+
 				else {
 					lf.moot.stop();
-					
-					if (lf.data.getPuoli() == 2){
-						lf.moot.rotateRight(lf.data.getNopeus(), lf.data.getRotaatio45());
+
+					if (lf.data.getPuoli() == 2) {
+						lf.moot.rotateRight(lf.data.getNopeus(),
+								lf.data.getRotaatio45());
 					}
 
 					else {
-						lf.moot.rotateLeft(lf.data.getNopeus(), lf.data.getRotaatio45());
+						lf.moot.rotateLeft(lf.data.getNopeus(),
+								lf.data.getRotaatio45());
 					}
 					lf.moot.setVaihde(1);
 				}
@@ -219,12 +239,19 @@ public class Seuraaja implements Runnable {
 			// && light.getLightValue() < blackWhiteThreshold) {
 			// lf.moot.setVaihde(1);
 			// }
-			 // Lopetus
-			 if (lf.moot.getVaihde() == 0) {
-				 lf.moot.stop();
-				 LCD.clear();
-				 LCD.drawString("KAKKAAA!", 2, 0);
-			 }
+			// Lopetus
+			if (lf.moot.getVaihde() == 0) {
+				lf.moot.stop();
+				LCD.clear();
+				LCD.drawString("KAKKAAA!", 2, 0);
+			}
+
+			try {
+				lf.data.OutputData();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 		}
 		// LCD.clear();
