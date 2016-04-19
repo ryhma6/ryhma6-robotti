@@ -169,10 +169,11 @@ public class Seuraaja implements Runnable {
 }				
              else if (lf.moot.getVaihde() == 2) {
 				
-            	 if(estelkm == 1) {
+            	 if(estelkm >= 1) {
             		 lf.moot.setVaihde(0);
             	 }
-            	 int estelkm = 1;
+            	 
+            	 estelkm++;
             	 
 				if (lf.data.getPuoli() == 2) {
 					lf.moot.rotateLeft(400, -520, 4000);
