@@ -1,5 +1,6 @@
 package virallinenRobotti6;
 
+import java.io.File;
 import java.io.IOException;
 
 import lejos.nxt.Button;
@@ -104,8 +105,8 @@ public class Seuraaja implements Runnable {
 		// LCD.drawString("Valo: ", 0, 3);
 
 		while (isRunning) {
-			
-	        Sound.beep();
+			 File file=new File("motor_start.wav");
+			 Sound.playSample(file,Sound.VOL_MAX);
 			
 			aika = stopwatch.elapsed();
 			LCD.drawInt(light.readValue(), 9, 1);
