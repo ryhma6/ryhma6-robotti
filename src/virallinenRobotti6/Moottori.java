@@ -99,10 +99,6 @@ public class Moottori {
 		return true;
 	}
 	
-	public void resetTacho() {
-		MotorPort.C.resetTachoCount();
-		MotorPort.B.resetTachoCount();
-	}
 
 	public void forwardSlow() {
 		Motor.C.setSpeed(100);
@@ -140,7 +136,7 @@ public class Moottori {
 	// }
 
 	public void rotateLeft(int speed, int degrees) {
-
+		stop();
 		Motor.C.setSpeed(speed);
 		Motor.C.rotate(degrees);
 		stop();

@@ -181,27 +181,29 @@ public class Seuraaja implements Runnable {
 
 				if (estelkm >= 1) {
 					lf.moot.setVaihde(0);
-					break;
 				}
-
+				else {
+					
 				estelkm++;
 
 				if (lf.data.getPuoli() == 2) {
-					lf.moot.rotateLeft(400, -520, 4000);
-					lf.moot.rotateRight(400, -520, 5000);
-					lf.moot.rotateRight(400, -520);
+					lf.moot.rotateLeft(200, -520, 4000);
+					lf.moot.rotateRight(200, -520, 5000);
+					lf.moot.rotateRight(200, -520);
 					lf.moot.setVaihde(3);
 				} else {
-					lf.moot.rotateRight(400, -520, 4000);
-					lf.moot.rotateLeft(400, -520, 7000);
-					lf.moot.rotateLeft(400, -520);
+					lf.moot.rotateRight(200, -520, 4000);
+					lf.moot.rotateLeft(200, -520, 5000);
+					lf.moot.rotateLeft(200, -520);
 					lf.moot.setVaihde(3);
 				}
 
 				lf.moot.setVaihde(3);
 				lf.moot.stop();
+				}
+			}
 
-			} else if (lf.moot.getVaihde() == 3) {
+			 else if (lf.moot.getVaihde() == 3) {
 
 				if (light.readValue() > lf.data.getYlarajaMusta()) {
 					lf.moot.eteenpain(lf.data.getNopeus());
@@ -222,6 +224,7 @@ public class Seuraaja implements Runnable {
 					lf.moot.setVaihde(1);
 				}
 			}
+			
 
 			// // Paluu radalle väistön jälkeen
 			// while (lf.moot.getVaihde() == 3
@@ -234,9 +237,9 @@ public class Seuraaja implements Runnable {
 			// }
 			// Lopetus
 			if (lf.moot.getVaihde() == 0) {
-				lf.moot.stop();
 				LCD.clear();
 				LCD.drawString("KAKKAAA!", 2, 0);
+				lf.moot.stop();
 			}
 
 		}

@@ -18,7 +18,7 @@ public class Data {
 	private float kaantoHidas = 0.85f;
 	private float kaantoNopea = 0.2f;
 	private int rotaatio90 = 400;
-	private int rotaatio45 = 200;
+	private int rotaatio45 = 300;
 	private int kaantoVaihe = 0;
 	private int esteUlospainAika = 2000;
 	private int esteOhitusAika = 2000;
