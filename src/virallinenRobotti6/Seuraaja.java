@@ -23,6 +23,7 @@ public class Seuraaja implements Runnable {
 	private int tMax = 60;
 	private String lightValues = "";
 	private boolean isRunning;
+	int estelkm = 0;
 
 	// etaisyys
 	boolean minDistReached = false;
@@ -55,16 +56,17 @@ public class Seuraaja implements Runnable {
 		// LCD.drawString("Paina vasen ", 0, 2);
 		// LCD.drawString("aloittaaksesi", 0, 3);
 		// LCD.drawString("tai yhdista!", 0, 4);
-
-		while (!Button.LEFT.isPressed()) {
+	
+		
 			LCD.drawString("Valitse puoli", 0, 0);
 			LCD.drawInt(light.readValue(), 9, 1);
 
-			int value = ultra.getDistance();
+			int vallu = ultra.getDistance();
 			LCD.drawString("Etaisyys:", 4, 3);
-			LCD.drawInt(value, 4, 5);
-		}
-
+			LCD.drawInt(vallu, 4, 5);
+			
+			Button.waitForAnyPress();
+		
 		if (Button.LEFT.isPressed()) {
 			LCD.clear();
 			lf.data.setPuoli(2);
@@ -74,8 +76,9 @@ public class Seuraaja implements Runnable {
 		if (Button.RIGHT.isPressed()) {
 			LCD.clear();
 			lf.data.setPuoli(1);
-			LCD.drawString("Oikea puoli", 0, 0);
+			LCD.drawString("Oikea puoli", 0, 0);	
 		}
+		
 
 		// 5 Sekunnin viive
 		try {
@@ -88,7 +91,6 @@ public class Seuraaja implements Runnable {
 
 		// Aseteetaan vaihde 1 eli viivanseuranta
 		lf.moot.setVaihde(1);
-		lf.data.setPuoli(2);
 		sw.reset();
 
 		// LCD.clear();
@@ -101,12 +103,14 @@ public class Seuraaja implements Runnable {
 			// aika = stopwatch.elapsed();
 			LCD.drawInt(light.readValue(), 9, 1);
 			int value = ultra.getDistance();
-			LCD.drawString("Etaisyys:", 4, 3);
-			LCD.drawInt(value, 4, 5);
+			LCD.drawString("Etaisyys:", 1, 4);
+			LCD.drawInt(value, 8, 4);
 
 			int vaihdepaalla = lf.moot.getVaihde();
-			LCD.drawString("VAIHDE:", 6, 3);
-			LCD.drawInt(vaihdepaalla, 6, 5);
+			LCD.drawString("VAIHDE:", 1, 3);
+			LCD.drawInt(vaihdepaalla, 7, 3);
+			
+			
 
 			// LCD.drawInt(aika / 1000, 6, 2);
 			// LCD.drawInt(light.getLightValue(), 6, 3);
@@ -125,7 +129,8 @@ public class Seuraaja implements Runnable {
 			// // Vasemman puolen seuraus
 
 			if (lf.data.getPuoli() == 2 && lf.moot.getVaihde() == 1) {
-
+				
+				LCD.drawString("Vasen puoli", 0, 0);
 				if (light.readValue() > lf.data.getAlarajaValkoinen())
 					lf.moot.rightTurn(lf.data.getNopeus(), lf.data.getKaantoNopea());
 				
@@ -143,7 +148,9 @@ public class Seuraaja implements Runnable {
 			}
 
 			// Oikean puolen seuraus
-			else if (lf.data.getPuoli() == 1 && lf.moot.getVaihde() == 1) {
+			if (lf.data.getPuoli() == 1 && lf.moot.getVaihde() == 1) {
+				LCD.drawString("oikea puoli", 0, 0);
+				
 				if (light.readValue() > lf.data.getAlarajaValkoinen())
 					lf.moot.leftTurn(lf.data.getNopeus(), lf.data.getKaantoNopea());
 				
@@ -159,9 +166,11 @@ public class Seuraaja implements Runnable {
 				if (light.readValue() < lf.data.getAlarajaMusta())
 					lf.moot.rightTurn(lf.data.getNopeus(), lf.data.getKaantoNopea());
 
+}				
+             else if (lf.moot.getVaihde() == 2) {
 				
-			} else if (lf.moot.getVaihde() == 2) {
-				
+            	 
+            	 
 				if (lf.data.getPuoli() == 2) {
 					lf.moot.rotateLeft(400, -520, 4000);
 					lf.moot.rotateRight(400, -520, 5000);
@@ -178,12 +187,20 @@ public class Seuraaja implements Runnable {
 				lf.moot.stop();
 				
 			} else if (lf.moot.getVaihde() == 3) {
-				if (light.readValue() > lf.data.getYlarajaMusta())
-				{
-					lf.moot.eteenpain(lf.data.getNopeus());
-				} else {
+				
+				if (light.readValue() > lf.data.getYlarajaMusta()){
+					lf.moot.eteenpain(lf.data.getNopeus());				
+				}
+				
+				else {
 					lf.moot.stop();
-					lf.moot.rotateRight(lf.data.getNopeus(), lf.data.getRotaatio45());
+					
+					if (lf.data.getPuoli() == 2){
+						lf.moot.rotateRight(lf.data.getNopeus(), lf.data.getRotaatio45());
+					}
+					else {
+						lf.moot.rotateLeft(lf.data.getNopeus(), lf.data.getRotaatio45());
+					}
 					lf.moot.setVaihde(1);
 				}
 			}
@@ -197,10 +214,11 @@ public class Seuraaja implements Runnable {
 			// && light.getLightValue() < blackWhiteThreshold) {
 			// lf.moot.setVaihde(1);
 			// }
-			// // Lopetus
+			 // Lopetus
 			 if (lf.moot.getVaihde() == 0) {
-			 lf.moot.stop();
-			 isRunning = false;
+				 lf.moot.stop();
+				 LCD.clear();
+				 LCD.drawString("KAKKAAA!", 2, 0);
 			 }
 
 		}

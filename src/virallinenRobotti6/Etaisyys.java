@@ -62,14 +62,11 @@ public class Etaisyys implements Runnable {
 	
 	public void Este() {
 		
-		if (distance <= Arvo && lf.moot.getVaihde() == 1 && estelkm <=0){
-			estelkm ++;
+		if (distance <= Arvo && lf.moot.getVaihde() == 1){
 			lf.moot.setVaihde(2);
 			lf.moot.stop();
 		}
-		else{
-			lf.moot.setVaihde(0);
-		}
+	
 		}
 	}
 	
